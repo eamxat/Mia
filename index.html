@@ -1055,15 +1055,23 @@
         .footer-signature {
             position: absolute;
             bottom: 8px;
-            width: 100%;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: max-content;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             font-weight: 500;
             color: var(--text-main);
-            opacity: 0.8;
+            opacity: 0.25;
             letter-spacing: 1px;
             z-index: 100;
-            pointer-events: none; /* Evita que bloquee clics en elementos debajo */
+            transition: opacity 0.4s ease, text-shadow 0.4s ease;
+        }
+
+        .footer-signature:hover {
+            opacity: 0.9;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
         }
 
         /* =========================================
