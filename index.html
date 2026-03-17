@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MIA XATSPACE</title>
     
     <!-- Google Fonts -->
@@ -57,6 +57,7 @@
         body {
             width: 100vw;
             height: 100vh;
+            height: 100dvh; /* Soporte para mobile browsers URL bar */
             overflow: hidden;
             display: flex;
             justify-content: center;
@@ -146,6 +147,7 @@
         .desktop-container {
             width: 92vw;
             height: 88vh;
+            height: 88dvh;
             display: grid;
             grid-template-columns: 80px 1fr;
             grid-template-rows: 1fr; /* Eliminamos la fila inferior del dock */
@@ -733,74 +735,6 @@
         }
 
         /* =========================================
-           VISTA FRIENDS (NUEVA)
-           ========================================= */
-        .friends-layout.active {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 20px;
-            padding: 20px 40px;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-        }
-        
-        /* Custom scrollbar para la vista de amigos */
-        .friends-layout::-webkit-scrollbar { width: 8px; }
-        .friends-layout::-webkit-scrollbar-track { background: transparent; }
-        .friends-layout::-webkit-scrollbar-thumb { background: var(--pastel-purple-dark); border-radius: 10px; }
-
-        .friends-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 25px;
-            width: 100%;
-            padding: 10px 0 30px 0;
-        }
-
-        .friend-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            gap: 12px;
-            padding: 20px 15px;
-            border-radius: 24px;
-            background: rgba(255, 255, 255, 0.16);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.30);
-            box-shadow: 0 8px 25px var(--glass-shadow);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .friend-card:hover {
-            transform: translateY(-8px) scale(1.05);
-            background: rgba(255, 255, 255, 0.22); /* Hover ligeramente más sólido */
-            box-shadow: 0 12px 30px rgba(255, 200, 236, 0.6);
-            border-color: var(--glass-highlight);
-        }
-
-        .friend-avatar {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #fff;
-            box-shadow: 0 5px 15px rgba(214, 198, 255, 0.5);
-        }
-
-        .friend-name {
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-
-        /* =========================================
            VISTA INSTAGRAM (GALERÍA DE IMÁGENES)
            ========================================= */
         .instagram-layout.active {
@@ -1064,6 +998,128 @@
             100% { opacity: 0; transform: scale(0) rotate(90deg); }
         }
 
+        /* =========================================
+           RESPONSIVE DESIGN (MÓVILES Y TABLETS)
+           ========================================= */
+        @media screen and (max-width: 1024px) {
+            .desktop-container {
+                width: 96vw;
+                height: 94dvh;
+                grid-template-columns: 70px 1fr;
+                gap: 15px;
+            }
+            .center-character {
+                left: 50%;
+                height: 100%;
+            }
+            .left-widgets { width: 240px; }
+            .right-widgets { width: 260px; }
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                height: 100dvh; /* Adaptación extra para Safari/iOS */
+                overflow: hidden;
+            }
+            .desktop-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr auto; /* Workspace arriba, sidebar dock abajo */
+                width: 95vw;
+                height: 96dvh;
+                gap: 15px;
+            }
+            .sidebar {
+                grid-column: 1;
+                grid-row: 2;
+                flex-direction: row;
+                justify-content: space-evenly;
+                padding: 15px 10px;
+                border-radius: 25px;
+                height: auto;
+            }
+            .home-nav-icon {
+                margin-bottom: 0 !important;
+            }
+            .sidebar-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 24px;
+            }
+            .main-workspace {
+                grid-column: 1;
+                grid-row: 1;
+                padding: 20px;
+                overflow-y: auto; /* Scroll vertical fluido en móviles */
+                overflow-x: hidden;
+            }
+            .home-layout.active {
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 35px;
+            }
+            .left-widgets, .right-widgets {
+                width: 100%;
+                max-width: 400px;
+                align-items: center;
+            }
+            .time-display { text-align: center; }
+            .time-display p { text-align: center; }
+            .greeting-wrapper { align-self: center; }
+            .calendar-widget { min-height: 280px; }
+            
+            /* Ajuste del personaje para integrarse verticalmente en móvil */
+            .center-character {
+                position: relative; 
+                height: 350px;
+                bottom: 0;
+                left: 0;
+                transform: none;
+                margin: -20px 0;
+                animation: floatMobile 6s ease-in-out infinite;
+                z-index: 0;
+            }
+            @keyframes floatMobile {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+                100% { transform: translateY(0px); }
+            }
+            
+            .cards-grid {
+                width: 100%;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 140px 100px;
+            }
+
+            /* Reproductor de música emergente centrado en móviles */
+            .spotify-widget {
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) scale(0.9) !important;
+                width: 85%;
+                max-width: 320px;
+                z-index: 1000;
+            }
+            .spotify-widget.active {
+                transform: translate(-50%, -50%) scale(1) !important;
+            }
+            
+            /* Vistas internas adaptadas al ancho */
+            .yt-iframe-wrapper { height: 40vh; width: 100%; }
+            
+            .instagram-layout.active { padding: 20px 10px; }
+            .instagram-gallery-wrapper { padding: 10px; }
+            .carousel-wrapper { width: 100%; margin: 0; }
+            
+            .heart-layout.active { padding: 20px 10px; }
+            .heart-grid { width: 100%; }
+            
+            /* Textos proporcionados */
+            .mia-text { font-size: 2.8rem; }
+            .time-display h1 { font-size: 4rem; }
+        }
+
     </style>
 </head>
 <body>
@@ -1182,7 +1238,7 @@
                     </div>
 
                     <div class="cards-grid">
-                        <!-- Imágenes Aesthetic (GIFs animados) -->
+                        <!-- Imágenes Aesthetic (GIFs animados intactos) -->
                         <div class="card card-tall-1">
                             <img src="https://i.imgur.com/RVLAN4C.gif" alt="Aesthetic GIF 1">
                         </div>
